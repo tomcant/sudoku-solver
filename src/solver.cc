@@ -1,59 +1,65 @@
 #include <cstdlib>
-#include "SudokuSolver.h"
+#include <string>
+#include <vector>
+#include "solver.h"
 
-void SudokuSolver::solve(SudokuGrid grid) {
-  if (grid.isComplete()) {
+namespace sudoku_solver {
+
+void Solver::Solve(Grid grid) {
+  if (grid.IsComplete()) {
     std::cout << grid;
     std::exit(0);
   }
 
   // Make as many forced moves as possible.
-  bool forcedMoveAvailable;
+  bool forced_move_available;
   vector<string> moves;
 
   do {
-    forcedMoveAvailable = false;
-    moves = grid.generateMoves();
+    forced_move_available = false;
+    moves = grid.GenerateMoves();
 
     for (size_t cell = 0; cell < 81; ++cell) {
       if (moves[cell].size() == 1) {
-        forcedMoveAvailable = true;
-        grid.setCell(cell, moves[cell][0]);
+        forced_move_available = true;
+        grid.SetCell(cell, moves[cell][0]);
         break;
       }
     }
-  } while(forcedMoveAvailable);
+  } while (forced_move_available);
 
   // If there exists a cell with no possible moves then the sudoku is not
   // solvable from this point.
   for (size_t cell = 0; cell < 81; ++cell) {
-    if (grid.isCellClear(cell) && moves[cell].size() == 0) {
+    if (grid.IsCellClear(cell) && moves[cell].size() == 0) {
       return;
     }
   }
 
-  if (grid.isComplete()) {
+  if (grid.IsComplete()) {
     std::cout << grid;
     std::exit(0);
   }
 
   // Find the cell with the fewest possibilities.
   size_t min = 9,
-    minCell = 0;
+    min_cell = 0;
 
   for (size_t cell = 0; cell < 81; ++cell) {
     size_t size = moves[cell].size();
 
     if (size > 0 && size < min) {
       min = size;
-      minCell = cell;
+      min_cell = cell;
     }
   }
 
   // Search the sub-tree of possibilities.
-  for (size_t i = 0; i < min; ++i){
-    grid.setCell(minCell, moves[minCell][i]);
-    solve(grid);
-    grid.clearCell(minCell);
+  for (size_t i = 0; i < min; ++i) {
+    grid.SetCell(min_cell, moves[min_cell][i]);
+    Solve(grid);
+    grid.ClearCell(min_cell);
   }
 }
+
+}  // namespace sudoku_solver

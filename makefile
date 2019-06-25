@@ -1,9 +1,9 @@
-SRCS=main.cpp SudokuSolver.cpp SudokuGrid.cpp
-HDRS=SudokuSolver.h SudokuGrid.h
+SRCS=src/main.cc src/solver.cc src/grid.cc
+HDRS=src/solver.h src/grid.h
 
 .PHONY: build
 build: $(SRCS) $(HDRS)
-	g++ -o sudoku $(SRCS)
+	g++ -o sudoku-solver $(SRCS)
 
 .PHONY: clean
 clean:
