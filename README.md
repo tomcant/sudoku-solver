@@ -13,6 +13,8 @@ An input puzzle file is required to run the solver. There are 3 test puzzles inc
 ```
 ./sudoku-solver puzzles/hard.sdk
 ```
+![alt text](https://tomcant.s3-eu-west-1.amazonaws.com/resources/images/sudoku-solver/sudoku-hard-unsolved.png "Hard Sudoku puzzle, unsolved")
+![alt text](https://tomcant.s3-eu-west-1.amazonaws.com/resources/images/sudoku-solver/sudoku-hard-solved.png "Hard Sudoku puzzle, solved")
 
 ## General Approach
 
