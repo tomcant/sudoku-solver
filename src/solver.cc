@@ -19,7 +19,7 @@ void Solver::Solve(Grid grid) {
     forced_move_available = false;
     moves = grid.GenerateMoves();
 
-    for (size_t cell = 0; cell < 81; ++cell) {
+    for (size_t cell = 0; cell < Grid::SIZE; ++cell) {
       if (moves[cell].size() == 1) {
         forced_move_available = true;
         grid.SetCell(cell, moves[cell][0]);
@@ -30,7 +30,7 @@ void Solver::Solve(Grid grid) {
 
   // If there exists a cell with no possible moves then the sudoku is not
   // solvable from this point.
-  for (size_t cell = 0; cell < 81; ++cell) {
+  for (size_t cell = 0; cell < Grid::SIZE; ++cell) {
     if (grid.IsCellClear(cell) && moves[cell].size() == 0) {
       return;
     }
@@ -45,7 +45,7 @@ void Solver::Solve(Grid grid) {
   size_t min = 9,
     min_cell = 0;
 
-  for (size_t cell = 0; cell < 81; ++cell) {
+  for (size_t cell = 0; cell < Grid::SIZE; ++cell) {
     size_t size = moves[cell].size();
 
     if (size > 0 && size < min) {
