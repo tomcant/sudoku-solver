@@ -19,10 +19,15 @@ int main(int argc, char *argv[]) {
     grid.FromFile(argv[1]);
     cout << grid << endl;
   } catch (const char *error) {
-    cerr << error;
+    cerr << error << endl;
     return 1;
   }
 
   Solver solver;
-  solver.Solve(grid);
+
+  try {
+    cout << solver.Solve(grid) << endl;
+  } catch (const char*) {
+    cout << "This puzzle is unsolvable." << endl;
+  }
 }

@@ -7,7 +7,7 @@ namespace sudoku_solver {
 
 class Solver {
  public:
-  void Solve(Grid);
+  Grid Solve(Grid);
 };
 
 }  // namespace sudoku_solver

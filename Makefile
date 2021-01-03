@@ -7,4 +7,4 @@ build: $(SRCS) $(HDRS)
 
 .PHONY: clean
 clean:
-	rm -f sudoku
+	rm -f sudoku-solver

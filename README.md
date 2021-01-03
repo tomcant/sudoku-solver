@@ -22,11 +22,12 @@ This algorithm uses recursion to apply every combination of possible choices per
 
 Roughly speaking, the following steps are taken:
 
-1. Make as many forced moves as possible (i.e. where the number of possible choices for a given cell is 1). This should be enough to solve most _easy_ puzzles.
-2. If the grid contains a cell with zero possible choices at this stage then mark this combination of choices as unsolvable from this point. This will bubble back up the recursive step.
-3. Find the cell with the fewest possible choices and for each one, apply it to the grid and go back to step 1 (this is the recursive step).
+1. Make as many forced moves as possible (i.e. where the number of choices for a given cell is one). This will be enough to solve most _easy_ puzzles.
+2. Check for completeness or unsolvability:
+   - If the grid now contains no empty cells then we are done and the grid is returned.
+   - If the grid now contains an empty cell with no choices then mark this combination as unsolvable.
+3. Find the cell with the fewest choices and apply each of them in turn, attempting to solve each new puzzle this produces (recurse back to step 1).
 
 ## To Do
 
-+ The `Solver::Solve()` method should return a completed `Grid` instance rather than output the grid when it's done. It doesn't make sense for the solver to be concerned with what it means to output a grid; it should only be concerned with finding the solution. Output should be taken care of by a separate module.
-+ It would be nice if the input files were formatted like a Sudoku grid rather than as a string of digits on one line.
++ Format input files like a Sudoku grid rather than as a string of digits on one line.

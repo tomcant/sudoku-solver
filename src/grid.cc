@@ -1,5 +1,4 @@
 #include <fstream>
-#include <cstdlib>
 #include "grid.h"
 
 namespace sudoku_solver {
