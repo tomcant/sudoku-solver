@@ -1,6 +1,6 @@
 # Sudoku Solver
 
-A solver for the classic Sudoku game written in C++. Uses a depth first brute force approach, nothing clever going on here...
+A solver for the classic Sudoku game written in C++. Uses a brute force approach, nothing clever going on here.
 
 ## Compile and Run
 

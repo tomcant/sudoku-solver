@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
   Grid grid;
 
   try {
-    grid.FromFile(argv[1]);
+    grid = Grid::FromFile(argv[1]);
     cout << grid << endl;
   } catch (const char *error) {
     cerr << error << endl;

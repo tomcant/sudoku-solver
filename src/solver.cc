@@ -53,7 +53,7 @@ Grid Solver::Solve(Grid grid) {
 
     try {
       return Solve(grid);
-    } catch (char const *c) {
+    } catch (char const*) {
       grid.ClearCell(min_cell);
     }
   }

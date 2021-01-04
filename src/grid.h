@@ -22,6 +22,10 @@ class Grid {
     cells_ = string(SIZE, EMPTY);
   }
 
+  Grid(const string &cells): cells_(cells) {}
+
+  static Grid FromFile(const string&);
+
   Grid &SetCell(int cell, char value) {
     cells_[cell] = value;
     return *this;
@@ -44,9 +48,7 @@ class Grid {
     return cells_.find(EMPTY) == string::npos;
   }
 
-  void FromFile(const string);
   vector<string> GenerateMoves();
-
   bool BoxHasDigit(char, int);
   bool RowHasDigit(char, int);
   bool ColumnHasDigit(char, int);

@@ -6,7 +6,7 @@ namespace sudoku_solver {
 const char Grid::EMPTY = '0';
 const int Grid::SIZE = 81;
 
-void Grid::FromFile(const string filepath) {
+Grid Grid::FromFile(const string &filepath) {
   if (filepath.empty() || !filepath.data()) {
     throw "Invalid input file string.";
   }
@@ -17,20 +17,22 @@ void Grid::FromFile(const string filepath) {
     throw "Input file could not be read.";
   }
 
-  getline(filestream, cells_);
+  string cells;
+  getline(filestream, cells);
 
-  if (cells_.size() != SIZE) {
+  if (cells.size() != SIZE) {
     throw "Input file content has incorrect length.";
   }
 
   for (size_t i = 0; i < SIZE; ++i) {
-    if (!isdigit(cells_[i])) {
+    if (!isdigit(cells[i])) {
       throw "Input file contains an invalid character.";
     }
   }
+
+  return Grid(cells);
 }
 
-// Checks if the character `n' is in the box containing index `i'.
 bool Grid::BoxHasDigit(char n, int i) {
   static const int index_to_box_start[] = {
     0,  0,  0,  3,  3,  3,  6,  6,  6,
@@ -46,8 +48,7 @@ bool Grid::BoxHasDigit(char n, int i) {
     54, 54, 54, 57, 57, 57, 60, 60, 60
   };
 
-  int
-    start = index_to_box_start[i],
+  int start = index_to_box_start[i],
     end = start + 21;
 
   for (int j = start; j < end; j += 9) {
@@ -61,9 +62,8 @@ bool Grid::BoxHasDigit(char n, int i) {
   return false;
 }
 
-// Checks if the character `n' is in the row containing index `i'.
 bool Grid::RowHasDigit(char n, int i) {
-  int start = i / 9 * 9,
+  int start = i - i % 9,
     end = start + 9;
 
   for (int j = start; j < end; ++j) {
@@ -75,7 +75,6 @@ bool Grid::RowHasDigit(char n, int i) {
   return false;
 }
 
-// Checks if the character `n' is in the column containing index `i'.
 bool Grid::ColumnHasDigit(char n, int i) {
   int start = i % 9,
     end = start + 73;
@@ -89,7 +88,6 @@ bool Grid::ColumnHasDigit(char n, int i) {
   return false;
 }
 
-// Generates all possible cell values and stores them in a vector.
 vector<string> Grid::GenerateMoves() {
   vector<string> moves;
 
