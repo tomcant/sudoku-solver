@@ -6,10 +6,10 @@ A solver for the classic Sudoku game written in C++. Uses a depth first brute fo
 
 This project was last tested and working against the `gcc` compiler version 7.4.0. To compile...
 ```
-cd sudoku-solver-cpp
+cd sudoku-solver
 make build
 ```
-An input puzzle file is required to run the solver. There are 3 test puzzles included in the `puzzles/` directory (easy, medium, hard)
+An input puzzle file is required to run the solver. There are 4 test puzzles included in the `puzzles/` directory (easy, medium, hard and unsolvable)
 ```
 ./sudoku-solver puzzles/hard.sdk
 ```
@@ -18,7 +18,7 @@ An input puzzle file is required to run the solver. There are 3 test puzzles inc
 
 ## General Approach
 
-This algorithm uses recursion to apply every combination of possible choices per cell either until the grid is full or until there are no more choices to explore, in which case the puzzle is unsolvable.
+This algorithm uses [Depth-first search](https://en.wikipedia.org/wiki/Depth-first_search) to apply every combination of possible choices per cell either until the grid is full or until there are no more choices to explore, in which case the puzzle is unsolvable.
 
 Roughly speaking, the following steps are taken:
 
