@@ -8,3 +8,6 @@ build: $(SRCS) $(HDRS)
 .PHONY: clean
 clean:
 	rm -f sudoku-solver
+
+solve/%:
+	@./sudoku-solver puzzles/$*.sdk

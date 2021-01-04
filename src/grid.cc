@@ -3,7 +3,7 @@
 
 namespace sudoku_solver {
 
-const char Grid::EMPTY = '0';
+const char Grid::EMPTY = '.';
 const int Grid::SIZE = 81;
 
 Grid Grid::FromFile(const string &filepath) {
@@ -25,7 +25,7 @@ Grid Grid::FromFile(const string &filepath) {
   }
 
   for (size_t i = 0; i < SIZE; ++i) {
-    if (!isdigit(cells[i])) {
+    if (!isdigit(cells[i]) && EMPTY != cells[i]) {
       throw "Input file contains an invalid character.";
     }
   }
@@ -125,17 +125,17 @@ ostream& operator<<(ostream &stream, const Grid &grid) {
 
   char grid_template[] =
     "|-----------|\n"
-    "|   |   |   |\n"
-    "|   |   |   |\n"
-    "|   |   |   |\n"
+    "|...|...|...|\n"
+    "|...|...|...|\n"
+    "|...|...|...|\n"
     "|-----------|\n"
-    "|   |   |   |\n"
-    "|   |   |   |\n"
-    "|   |   |   |\n"
+    "|...|...|...|\n"
+    "|...|...|...|\n"
+    "|...|...|...|\n"
     "|-----------|\n"
-    "|   |   |   |\n"
-    "|   |   |   |\n"
-    "|   |   |   |\n"
+    "|...|...|...|\n"
+    "|...|...|...|\n"
+    "|...|...|...|\n"
     "|-----------|";
 
   for (size_t cell = 0; cell < Grid::SIZE; ++cell) {
