@@ -17,8 +17,11 @@ Grid Grid::FromFile(const string &filepath) {
     throw "Input file could not be read.";
   }
 
-  string cells;
-  getline(filestream, cells);
+  string cells, chunk;
+
+  while (filestream >> chunk) {
+    cells += chunk;
+  }
 
   if (cells.size() != SIZE) {
     throw "Input file content has incorrect length.";
