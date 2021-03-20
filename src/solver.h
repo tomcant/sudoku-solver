@@ -10,6 +10,10 @@ class Solver {
   static Grid Solve(Grid);
 };
 
+struct Unsolvable : public std::runtime_error {
+  Unsolvable() : std::runtime_error("Grid is not solvable") {}
+};
+
 }  // namespace sudoku_solver
 
 #endif  // SRC_SOLVER_H_

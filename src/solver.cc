@@ -38,7 +38,7 @@ Grid Solver::Solve(Grid grid) {
     size_t size = moves[cell].size();
 
     if (size == 0) {
-      throw "unsolvable";
+      throw Unsolvable();
     }
 
     if (size < min) {
@@ -53,12 +53,12 @@ Grid Solver::Solve(Grid grid) {
 
     try {
       return Solve(grid);
-    } catch (char const*) {
+    } catch (const Unsolvable &) {
       grid.ClearCell(min_cell);
     }
   }
 
-  throw "unsolvable";
+  throw Unsolvable();
 }
 
 }  // namespace sudoku_solver

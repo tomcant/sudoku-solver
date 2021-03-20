@@ -1,11 +1,9 @@
 #ifndef SRC_GRID_H_
 #define SRC_GRID_H_
 
-#include <iostream>
 #include <string>
 #include <vector>
 
-using std::ostream;
 using std::string;
 using std::vector;
 
@@ -23,8 +21,6 @@ class Grid {
   }
 
   Grid(const string &cells): cells_(cells) {}
-
-  static Grid FromFile(const string&);
 
   Grid &SetCell(int cell, char value) {
     cells_[cell] = value;
@@ -57,8 +53,6 @@ class Grid {
   bool RowHasDigit(char, int);
   bool ColumnHasDigit(char, int);
 };
-
-ostream& operator<<(ostream &stream, const Grid &grid);
 
 }  // namespace sudoku_solver
 
