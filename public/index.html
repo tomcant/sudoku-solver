@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Sudoku Solver</title>
+  </head>
+  <body>
+    <script>
+      var Module = {
+        onRuntimeInitialized: function() {
+          var grid = new Module.Grid('.5.....3.3.2...7.4.8..1..5....7.3.....6.5.3.....8.2....2..9..4.6.9...8.1.1.....6.');
+          console.log(grid.GetCells());
+          var solvedGrid = Module.Solver.Solve(grid);
+          console.log(solvedGrid.GetCells());
+          grid.delete();
+        }
+      };
+    </script>
+    <script async src="sudoku-solver.js"></script>
+  </body>
+</html>

@@ -40,6 +40,10 @@ class Grid {
     return cells_[cell];
   }
 
+  string GetCells() const {
+    return cells_;
+  }
+
   bool IsCellClear(int cell) const {
     return GetCell(cell) == EMPTY;
   }

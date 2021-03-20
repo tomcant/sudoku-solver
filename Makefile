@@ -1,13 +1,10 @@
-SRCS=src/main.cc src/solver.cc src/grid.cc
-HDRS=src/solver.h src/grid.h
-
 .PHONY: build
-build: $(SRCS) $(HDRS)
-	g++ -o sudoku-solver $(SRCS)
+build:
+	docker run --rm -v $(PWD):/src emscripten/emsdk:2.0.15 ./build.sh
 
-.PHONY: clean
-clean:
-	rm -f sudoku-solver
+.PHONY: run
+run:
+	docker run --rm -v $(PWD)/public:/usr/share/nginx/html -p 80:80 nginx:latest
 
 solve/%:
 	@./sudoku-solver puzzles/$*.sdk
