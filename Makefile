@@ -5,6 +5,3 @@ build:
 .PHONY: run
 run:
 	docker run --rm -v $(PWD)/public:/usr/share/nginx/html -p 80:80 nginx:latest
-
-solve/%:
-	@./sudoku-solver puzzles/$*.sdk
