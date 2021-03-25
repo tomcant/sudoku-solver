@@ -10,8 +10,13 @@
       h1, .SudokuSolver {
         text-align: center;
       }
-      .SudokuSolver select {
+      .Controls {
         margin-bottom: 2rem;
+      }
+      .Controls > * {
+        margin: 0 0.5rem;
+      }
+      .Controls > select {
         text-transform: capitalize;
       }
       .Grid {
@@ -32,9 +37,9 @@
         border-radius: 0;
         font-size: 1rem;
         font-weight: bold;
-        text-align: center;
         cursor: pointer;
       }
+      .Grid-square:focus { outline: 0; }
       .Grid-square:nth-child(n+73):nth-child(-n+81),
       .Grid-square:nth-child(n+19):nth-child(-n+27),
       .Grid-square:nth-child(n+46):nth-child(-n+54) { border-bottom-width: 4px; }
@@ -81,13 +86,15 @@
 
         return (
           <div className="SudokuSolver">
-            <select onChange={e => setCells(puzzles[e.target.value])}>
-              {Object.keys(puzzles).map(difficulty =>
-                <option value={difficulty}>{difficulty}</option>
-              )}
-            </select>
+            <div className="Controls">
+              <select onChange={e => setCells(puzzles[e.target.value])}>
+                {Object.keys(puzzles).map(difficulty =>
+                  <option value={difficulty}>{difficulty}</option>
+                )}
+              </select>
+              <button onClick={solveClick}>Solve</button>
+            </div>
             <Grid cells={cells} />
-            <button onClick={solveClick}>Solve</button>
           </div>
         );
       };
