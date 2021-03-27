@@ -2,11 +2,8 @@
 
 namespace sudoku_solver {
 
-const char Grid::EMPTY = '.';
-const int Grid::SIZE = 81;
-
-bool Grid::BoxHasDigit(char n, int i) {
-  static const int index_to_box_start[] = {
+bool Grid::BoxHasDigit(int digit, int cell_idx) {
+  static const int cell_idx_to_box_start[] = {
     0,  0,  0,  3,  3,  3,  6,  6,  6,
     0,  0,  0,  3,  3,  3,  6,  6,  6,
     0,  0,  0,  3,  3,  3,  6,  6,  6,
@@ -20,12 +17,12 @@ bool Grid::BoxHasDigit(char n, int i) {
     54, 54, 54, 57, 57, 57, 60, 60, 60
   };
 
-  int start = index_to_box_start[i],
+  int start = cell_idx_to_box_start[cell_idx],
     end = start + 21;
 
-  for (int j = start; j < end; j += 9) {
-    for (int k = 0; k < 3; ++k) {
-      if (cells_[j + k] == n) {
+  for (int i = start; i < end; i += 9) {
+    for (int j = 0; j < 3; ++j) {
+      if (cells_[i + j] == digit) {
         return true;
       }
     }
@@ -34,12 +31,12 @@ bool Grid::BoxHasDigit(char n, int i) {
   return false;
 }
 
-bool Grid::RowHasDigit(char n, int i) {
-  int start = i - i % 9,
+bool Grid::RowHasDigit(int digit, int cell_idx) {
+  int start = cell_idx - cell_idx % 9,
     end = start + 9;
 
-  for (int j = start; j < end; ++j) {
-    if (cells_[j] == n) {
+  for (int i = start; i < end; ++i) {
+    if (GetCell(i) == digit) {
       return true;
     }
   }
@@ -47,12 +44,12 @@ bool Grid::RowHasDigit(char n, int i) {
   return false;
 }
 
-bool Grid::ColumnHasDigit(char n, int i) {
-  int start = i % 9,
+bool Grid::ColHasDigit(int digit, int cell_idx) {
+  int start = cell_idx % 9,
     end = start + 73;
 
-  for (int j = start; j < end; j += 9) {
-    if (cells_[j] == n) {
+  for (int i = start; i < end; i += 9) {
+    if (GetCell(i) == digit) {
       return true;
     }
   }
@@ -60,24 +57,28 @@ bool Grid::ColumnHasDigit(char n, int i) {
   return false;
 }
 
-vector<string> Grid::GenerateMoves() {
-  vector<string> moves;
+vector<vector<int>> Grid::GenerateChoices() {
+  vector<vector<int>> choices;
 
-  for (int i = 0; i < SIZE; ++i) {
-    string cell_options = "";
+  for (int cell_idx = 0; cell_idx < kSize; ++cell_idx) {
+    vector<int> choices_at_idx;
 
-    if (EMPTY == cells_[i]) {
-      for (char j = '1'; j <= '9'; ++j) {
-        if (!BoxHasDigit(j, i) && !RowHasDigit(j, i) && !ColumnHasDigit(j, i)) {
-          cell_options += j;
+    if (IsCellEmpty(cell_idx)) {
+      for (int digit = 1; digit <= 9; ++digit) {
+        if (
+          !BoxHasDigit(digit, cell_idx) &&
+          !RowHasDigit(digit, cell_idx) &&
+          !ColHasDigit(digit, cell_idx)
+        ) {
+          choices_at_idx.push_back(digit);
         }
       }
     }
 
-    moves.push_back(cell_options);
+    choices.push_back(choices_at_idx);
   }
 
-  return moves;
+  return choices;
 }
 
 }  // namespace sudoku_solver

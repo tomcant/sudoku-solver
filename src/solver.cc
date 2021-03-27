@@ -5,22 +5,22 @@
 namespace sudoku_solver {
 
 Grid Solver::Solve(Grid grid) {
-  // Make as many forced moves as possible.
-  bool forced_move_available;
-  vector<string> moves;
+  // Make as many forced choices as possible.
+  bool forced_choice_made;
+  vector<vector<int>> choices;
 
   do {
-    forced_move_available = false;
-    moves = grid.GenerateMoves();
+    forced_choice_made = false;
+    choices = grid.GenerateChoices();
 
-    for (size_t cell = 0; cell < Grid::SIZE; ++cell) {
-      if (moves[cell].size() == 1) {
-        forced_move_available = true;
-        grid.SetCell(cell, moves[cell][0]);
+    for (size_t i = 0; i < Grid::kSize; ++i) {
+      if (choices[i].size() == 1) {
+        forced_choice_made = true;
+        grid.SetCell(i, choices[i][0]);
         break;
       }
     }
-  } while (forced_move_available);
+  } while (forced_choice_made);
 
   if (grid.IsComplete()) {
     return grid;
@@ -30,12 +30,12 @@ Grid Solver::Solve(Grid grid) {
   size_t min = 9,
     min_cell = 0;
 
-  for (size_t cell = 0; cell < Grid::SIZE; ++cell) {
-    if (!grid.IsCellClear(cell)) {
+  for (size_t i = 0; i < Grid::kSize; ++i) {
+    if (!grid.IsCellEmpty(i)) {
       continue;
     }
 
-    size_t size = moves[cell].size();
+    size_t size = choices[i].size();
 
     if (size == 0) {
       throw Unsolvable();
@@ -43,13 +43,13 @@ Grid Solver::Solve(Grid grid) {
 
     if (size < min) {
       min = size;
-      min_cell = cell;
+      min_cell = i;
     }
   }
 
   // Search the sub-tree of possibilities.
-  for (size_t i = 0; i < min; ++i) {
-    grid.SetCell(min_cell, moves[min_cell][i]);
+  for (const auto &digit : choices[min_cell]) {
+    grid.SetCell(min_cell, digit);
 
     try {
       return Solve(grid);

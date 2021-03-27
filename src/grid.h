@@ -10,48 +10,65 @@ using std::vector;
 namespace sudoku_solver {
 
 class Grid {
-  string cells_;
-
  public:
-  static const char EMPTY;
-  static const int SIZE;
-
-  Grid() {
-    cells_ = string(SIZE, EMPTY);
+  void SetCell(int idx, int digit) {
+    cells_[idx] = digit;
   }
 
-  Grid(const string &cells): cells_(cells) {}
-
-  Grid &SetCell(int cell, char value) {
-    cells_[cell] = value;
-    return *this;
+  void ClearCell(int idx) {
+    SetCell(idx, kEmpty);
   }
 
-  Grid &ClearCell(int cell) {
-    SetCell(cell, EMPTY);
-    return *this;
+  int GetCell(int idx) const {
+    return cells_[idx];
   }
 
-  char GetCell(int cell) const {
-    return cells_[cell];
-  }
-
-  string GetCells() const {
+  vector<int> GetCells() const {
     return cells_;
   }
 
-  bool IsCellClear(int cell) const {
-    return GetCell(cell) == EMPTY;
+  bool IsCellEmpty(int idx) const {
+    return GetCell(idx) == kEmpty;
   }
 
   bool IsComplete() const {
-    return cells_.find(EMPTY) == string::npos;
+    return std::none_of(cells_.begin(), cells_.end(), [](int digit) { return digit == kEmpty; });
   }
 
-  vector<string> GenerateMoves();
-  bool BoxHasDigit(char, int);
-  bool RowHasDigit(char, int);
-  bool ColumnHasDigit(char, int);
+  string ToString() const {
+    string cells = "";
+
+    for (const int &digit : cells_) {
+      cells += std::to_string(digit);
+    }
+
+    return cells;
+  }
+
+  static Grid FromString(const string &cells) {
+    vector<int> cells_v;
+
+    for (const char &digit : cells) {
+      cells_v.push_back(digit - '0');
+    }
+
+    return Grid(cells_v);
+  }
+
+  vector<vector<int>> GenerateChoices();
+
+  bool BoxHasDigit(int, int);
+  bool RowHasDigit(int, int);
+  bool ColHasDigit(int, int);
+
+  static const int kSize = 81;
+
+ private:
+  vector<int> cells_;
+
+  Grid(const vector<int> &cells): cells_(cells) {}
+
+  static const int kEmpty = 0;
 };
 
 }  // namespace sudoku_solver

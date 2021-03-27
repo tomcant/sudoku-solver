@@ -22,7 +22,7 @@ This algorithm uses [depth-first search](https://en.wikipedia.org/wiki/Depth-fir
 
 Roughly speaking, the following steps are taken:
 
-1. Make as many forced moves as possible (i.e. where the number of choices for a given cell is one). This will be enough to solve most _easy_ puzzles.
+1. Make as many forced choices as possible (i.e. where the number of choices for a given cell is one). This will be enough to solve most _easy_ puzzles.
 2. Check for completeness or unsolvability:
    - If the grid now contains no empty cells then we are done and the grid is returned.
    - If the grid now contains an empty cell with no choices then mark this combination as unsolvable.

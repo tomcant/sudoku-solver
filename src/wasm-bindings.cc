@@ -10,8 +10,9 @@ using sudoku_solver::Solver;
 
 EMSCRIPTEN_BINDINGS(Grid) {
   class_<Grid>("Grid")
-    .constructor<string>()
-    .function("GetCells", &Grid::GetCells);
+    .function("GetCells", &Grid::GetCells)
+    .function("ToString", &Grid::ToString)
+    .class_function("FromString", &Grid::FromString);
 }
 
 EMSCRIPTEN_BINDINGS(Solver) {
