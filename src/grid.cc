@@ -2,6 +2,22 @@
 
 namespace sudoku_solver {
 
+Grid Grid::FromString(const string &cells) {
+  if (cells.size() != kSize) {
+    throw std::invalid_argument(
+      "Expected " + std::to_string(kSize) + " cells, got " + std::to_string(cells.size())
+    );
+  }
+
+  vector<int> cells_v;
+
+  for (const char &digit : cells) {
+    cells_v.push_back(digit - '0');
+  }
+
+  return Grid(cells_v);
+}
+
 bool Grid::BoxHasDigit(int digit, int cell_idx) {
   static const int cell_idx_to_box_start[] = {
     0,  0,  0,  3,  3,  3,  6,  6,  6,

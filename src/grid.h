@@ -45,21 +45,13 @@ class Grid {
     return cells;
   }
 
-  static Grid FromString(const string &cells) {
-    vector<int> cells_v;
-
-    for (const char &digit : cells) {
-      cells_v.push_back(digit - '0');
-    }
-
-    return Grid(cells_v);
-  }
-
   vector<vector<int>> GenerateChoices();
 
   bool BoxHasDigit(int, int);
   bool RowHasDigit(int, int);
   bool ColHasDigit(int, int);
+
+  static Grid FromString(const string&);
 
   static const int kSize = 81;
 
