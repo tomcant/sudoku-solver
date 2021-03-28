@@ -94,7 +94,8 @@
 
       const SudokuSolver = props => {
         const [cells, setCells] = React.useState(puzzles.easy);
-        const [solved, setSolved] = React.useState(false);
+        const [isCustom, setIsCustom] = React.useState(false);
+        const [isSolved, setIsSolved] = React.useState(false);
         const [error, setError] = React.useState(null);
         const selectElem = React.useRef(null);
 
@@ -102,7 +103,7 @@
           try {
             const grid = Module.Grid.FromString(cells);
             setCells(Module.Solver.Solve(grid).ToString());
-            setSolved(true);
+            setIsSolved(true);
           } catch (err) {
             setError(Module.getExceptionMessage(err));
           }
@@ -110,7 +111,8 @@
 
         const resetClick = () => {
           setCells(puzzles[selectElem.current.value]);
-          setSolved(false);
+          setIsCustom(false);
+          setIsSolved(false);
           setError(null);
         };
 
@@ -123,6 +125,7 @@
             setCells(newCells.join(''));
           }
 
+          setIsCustom(true);
           e.target.select();
         };
 
@@ -140,8 +143,8 @@
                   <option value="custom">Custom</option>
                 </optgroup>
               </select>
-              <button onClick={solveClick} disabled={solved}>Solve</button>
-              <button onClick={resetClick} disabled={!solved}>Reset</button>
+              <button onClick={solveClick} disabled={isSolved}>Solve</button>
+              <button onClick={resetClick} disabled={!isSolved && !isCustom}>Reset</button>
             </div>
             <Grid cells={cells} onCellChange={cellChange} />
             { error && <p>{error}</p> }
