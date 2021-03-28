@@ -51,7 +51,7 @@
       .Grid-square:nth-child(3n) { border-right-width: 4px; }
       .Grid-square:nth-child(9n+1) { border-left-width: 4px; }
     </style>
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js" crossorigin></script>
     <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
   </head>
@@ -139,8 +139,8 @@
                 type="text"
                 value={+cell || ''}
                 className="Grid-square"
-                onChange={(e) => props.onCellChange(e, idx)}
                 onFocus={(e) => e.target.select()}
+                onChange={(e) => props.onCellChange(e, idx)}
               />
             )}
           </div>
