@@ -51,7 +51,7 @@
       .Grid-square:nth-child(3n) { border-right-width: 4px; }
       .Grid-square:nth-child(9n+1) { border-left-width: 4px; }
     </style>
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js" crossorigin></script>
     <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
   </head>
@@ -76,6 +76,7 @@
       const SudokuSolver = props => {
         const [cells, setCells] = React.useState(puzzles.easy);
         const [solved, setSolved] = React.useState(false);
+        const [error, setError] = React.useState(null);
         const selectElem = React.useRef(null);
 
         const solveClick = () => {
@@ -84,13 +85,14 @@
             setCells(Module.Solver.Solve(grid).ToString());
             setSolved(true);
           } catch (err) {
-            console.log(Module.getExceptionMessage(err));
+            setError(Module.getExceptionMessage(err));
           }
         };
 
         const resetClick = () => {
           setCells(puzzles[selectElem.current.value]);
           setSolved(false);
+          setError(null);
         };
 
         const cellChange = (e, idx) => {
@@ -101,6 +103,8 @@
             newCells[idx] = digit || '0';
             setCells(newCells.join(''));
           }
+
+          e.target.select();
         };
 
         return (
@@ -121,6 +125,7 @@
               <button onClick={resetClick} disabled={!solved}>Reset</button>
             </div>
             <Grid cells={cells} onCellChange={cellChange} />
+            { error && <p>{error}</p> }
           </div>
         );
       };
@@ -134,8 +139,8 @@
                 type="text"
                 value={+cell || ''}
                 className="Grid-square"
-                onChange={(e) => props.onCellChange(e, idx)}
                 onFocus={(e) => e.target.select()}
+                onChange={(e) => props.onCellChange(e, idx)}
               />
             )}
           </div>
