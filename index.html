@@ -6,70 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="description" content="A depth-first search approach to solving Sudoku. Written in C++, compiled to WebAssembly and presented with React." />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css" />
-    <style>
-      h1, .SudokuSolver {
-        text-align: center;
-      }
-      .Controls {
-        margin-bottom: 2rem;
-      }
-      .Controls > * {
-        margin: 0 0.5rem;
-      }
-      .Controls > select {
-        text-transform: capitalize;
-      }
-      .Grid {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 2rem;
-      }
-      .Grid-squares {
-        display: grid;
-        grid-template: repeat(9, 40px) / repeat(9, 1fr);
-        border-radius: 5px;
-        border: 3px solid var(--nc-bg-3);
-      }
-      .Grid-square {
-        display: flex;
-        width: 40px;
-        height: 40px;
-        border-radius: 0;
-        font-size: 1rem;
-        text-align: center;
-        cursor: pointer;
-      }
-      .Grid-square:hover,
-      .Grid-square:focus {
-        background-color: var(--nc-bg-1);
-        outline: 0;
-      }
-      .Grid-square:nth-child(n+73):nth-child(-n+81),
-      .Grid-square:nth-child(n+19):nth-child(-n+27),
-      .Grid-square:nth-child(n+46):nth-child(-n+54) { border-bottom-width: 4px; }
-      .Grid-square:nth-child(n):nth-child(-n+9) { border-top-width: 4px; }
-      .Grid-square:nth-child(3n) { border-right-width: 4px; }
-      .Grid-square:nth-child(9n+1) { border-left-width: 4px; }
-      @media screen and (min-width: 768px) {
-        .Grid-squares {
-          grid-template: repeat(9, 45px) / repeat(9, 1fr);
-        }
-        .Grid-square {
-          width: 45px;
-          height: 45px;
-        }
-      }
-      @media screen and (min-width: 992px) {
-        .Grid-squares {
-          grid-template: repeat(9, 50px) / repeat(9, 1fr);
-        }
-        .Grid-square {
-          width: 50px;
-          height: 50px;
-          font-size: 1.1rem;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="./styles.css" />
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js" crossorigin></script>
     <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
