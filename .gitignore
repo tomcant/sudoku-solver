@@ -1,2 +1,2 @@
-public/*
-!public/index.html
+public/sudoku-solver.js
+public/sudoku-solver.wasm
