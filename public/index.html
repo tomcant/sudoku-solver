@@ -70,25 +70,34 @@
 
       const SudokuSolver = props => {
         const [cells, setCells] = React.useState(puzzles.easy);
+        const [solved, setSolved] = React.useState(false);
+        const selectElem = React.useRef(null);
 
         const solveClick = () => {
           try {
             const grid = Module.Grid.FromString(cells);
             setCells(Module.Solver.Solve(grid).ToString());
+            setSolved(true);
           } catch (err) {
             console.log(Module.getExceptionMessage(err));
           }
         };
 
+        const resetClick = () => {
+          setCells(puzzles[selectElem.current.value]);
+          setSolved(false);
+        };
+
         return (
           <div className="SudokuSolver">
             <div className="Controls">
-              <select onChange={e => setCells(puzzles[e.target.value])}>
+              <select ref={selectElem} onChange={resetClick}>
                 {Object.keys(puzzles).map(difficulty =>
                   <option value={difficulty}>{difficulty}</option>
                 )}
               </select>
-              <button onClick={solveClick}>Solve</button>
+              <button onClick={solveClick} disabled={solved}>Solve</button>
+              <button onClick={resetClick} disabled={!solved}>Reset</button>
             </div>
             <Grid cells={cells} />
           </div>
