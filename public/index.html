@@ -39,7 +39,11 @@
         font-weight: bold;
         cursor: pointer;
       }
-      .Grid-square:focus { outline: 0; }
+      .Grid-square:hover,
+      .Grid-square:focus {
+        background-color: var(--nc-bg-1);
+        outline: 0;
+      }
       .Grid-square:nth-child(n+73):nth-child(-n+81),
       .Grid-square:nth-child(n+19):nth-child(-n+27),
       .Grid-square:nth-child(n+46):nth-child(-n+54) { border-bottom-width: 4px; }
@@ -66,6 +70,7 @@
         medium: '300400600700090003800300000030521000000000090020030040048002000006000100000007400',
         hard: '800000000003600000070090200050007000000045700000100030001000068008500010090000400',
         unsolvable: '516849732307605000809700065135060907472591006968370050253186074684207500791050608',
+        custom: '000000000000000000000000000000000000000000000000000000000000000000000000000000000',
       };
 
       const SudokuSolver = props => {
@@ -88,18 +93,34 @@
           setSolved(false);
         };
 
+        const cellChange = (e, idx) => {
+          const digit = e.target.value;
+
+          if (!isNaN(digit) && digit.length <= 1) {
+            const newCells = cells.split('');
+            newCells[idx] = digit || '0';
+            setCells(newCells.join(''));
+          }
+        };
+
         return (
           <div className="SudokuSolver">
             <div className="Controls">
               <select ref={selectElem} onChange={resetClick}>
-                {Object.keys(puzzles).map(difficulty =>
-                  <option value={difficulty}>{difficulty}</option>
-                )}
+                <optgroup label="Difficulty">
+                  {['easy', 'medium', 'hard'].map(difficulty =>
+                    <option value={difficulty}>{difficulty}</option>
+                  )}
+                </optgroup>
+                <optgroup label="Other">
+                  <option value="unsolvable">Unsolvable</option>
+                  <option value="custom">Custom</option>
+                </optgroup>
               </select>
               <button onClick={solveClick} disabled={solved}>Solve</button>
               <button onClick={resetClick} disabled={!solved}>Reset</button>
             </div>
-            <Grid cells={cells} />
+            <Grid cells={cells} onCellChange={cellChange} />
           </div>
         );
       };
@@ -107,8 +128,15 @@
       const Grid = props => (
         <div className="Grid">
           <div className="Grid-squares">
-            {props.cells.split('').map((cell, index) =>
-              <input type="text" value={cell === '0' ? '' : cell} key={index} className="Grid-square" />
+            {props.cells.split('').map((cell, idx) =>
+              <input
+                key={idx}
+                type="text"
+                value={+cell || ''}
+                className="Grid-square"
+                onChange={(e) => props.onCellChange(e, idx)}
+                onFocus={(e) => e.target.select()}
+              />
             )}
           </div>
         </div>
