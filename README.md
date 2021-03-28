@@ -1,24 +1,14 @@
 # Sudoku Solver
 
-A solver for the classic Sudoku game written in C++. Uses a brute force approach, nothing clever going on here.
+A brute force approach to solving Sudoku. Written in C++, compiled to WebAssembly and [presented with React](https://tomcant.dev/sudoku-solver).
 
 ## Compile and Run
 
-This project was last tested and working against the `gcc` compiler version 7.4.0. To compile...
-```shell
-cd sudoku-solver
-make build
-```
-An input puzzle file is required to run the solver. There are 4 test puzzles included in the `puzzles/` directory (easy, medium, hard and unsolvable)
-```shell
-./sudoku-solver puzzles/hard.sdk # Or just `make solve/hard`
-```
-![alt text](https://tomcant.s3-eu-west-1.amazonaws.com/resources/images/sudoku-solver/sudoku-hard-unsolved.png "Hard Sudoku puzzle, unsolved")
-![alt text](https://tomcant.s3-eu-west-1.amazonaws.com/resources/images/sudoku-solver/sudoku-hard-solved.png "Hard Sudoku puzzle, solved")
+Run `make run` at the root of the project to compile and run the solver on http://localhost (this uses the [emscripten/emsdk](https://hub.docker.com/r/emscripten/emsdk) and [nginx](https://hub.docker.com/_/nginx) Docker images).
 
-## General Approach
+## The Algorithm
 
-This algorithm uses [depth-first search](https://en.wikipedia.org/wiki/Depth-first_search) to apply every combination of possible choices per cell either until the grid is full or until there are no more choices to explore, in which case the puzzle is unsolvable.
+We use [depth-first search](https://en.wikipedia.org/wiki/Depth-first_search) to apply every combination of possible choices per cell either until the grid is full or until there are no more choices to explore, in which case the puzzle is unsolvable.
 
 Roughly speaking, the following steps are taken:
 
