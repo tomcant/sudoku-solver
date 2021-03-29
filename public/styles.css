@@ -20,6 +20,10 @@ h1, .SudokuSolver {
   margin-bottom: 2rem;
 }
 
+.is-solving .Grid {
+  filter: blur(2px);
+}
+
 .Grid-squares {
   display: grid;
   grid-template: repeat(9, 40px) / repeat(9, 1fr);
