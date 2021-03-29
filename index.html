@@ -20,7 +20,7 @@
 
     <div id="sudoku-solver"></div>
 
-    <script type="text/babel">
+    <script>
       const puzzles = {
         easy: '050000030302000704080010050000703000006050300000802000020090040609000801010000060',
         medium: '300400600700090003800300000030521000000000090020030040048002000006000100000007400',
@@ -29,21 +29,34 @@
         custom: '000000000000000000000000000000000000000000000000000000000000000000000000000000000',
       };
 
+      const worker = new Worker('worker.js');
+    </script>
+
+    <script type="text/babel">
       const SudokuSolver = props => {
         const [cells, setCells] = React.useState(puzzles.easy);
         const [isCustom, setIsCustom] = React.useState(false);
+        const [isSolving, setIsSolving] = React.useState(false);
         const [isSolved, setIsSolved] = React.useState(false);
         const [error, setError] = React.useState(null);
         const selectElem = React.useRef(null);
 
         const solveClick = () => {
-          try {
-            const grid = Module.Grid.FromString(cells);
-            setCells(Module.Solver.Solve(grid).ToString());
-            setIsSolved(true);
-          } catch (err) {
-            setError(Module.getExceptionMessage(err));
-          }
+          setIsSolving(true);
+          worker.postMessage(cells);
+
+          worker.onmessage = worker.onmessage || (
+            e => {
+              setIsSolving(false);
+
+              if (e.data.error !== undefined) {
+                setError(e.data.error);
+              } else {
+                setCells(e.data.cells);
+                setIsSolved(true);
+              }
+            }
+          );
         };
 
         const resetClick = () => {
@@ -67,7 +80,7 @@
         };
 
         return (
-          <div className="SudokuSolver">
+          <div className={`SudokuSolver${isSolving ? ' is-solving' : ''}`}>
             <div className="Controls">
               <select ref={selectElem} onChange={resetClick}>
                 <optgroup label="Difficulty">
@@ -98,24 +111,18 @@
                 type="text"
                 value={+cell || ''}
                 className="Grid-square"
-                onFocus={(e) => e.target.select()}
-                onChange={(e) => props.onCellChange(e, idx)}
+                onFocus={e => e.target.select()}
+                onChange={e => props.onCellChange(e, idx)}
               />
             )}
           </div>
         </div>
       );
 
-      var Module = {
-        onRuntimeInitialized: () => {
-          ReactDOM.render(
-            <SudokuSolver />,
-            document.getElementById('sudoku-solver')
-          );
-        }
-      };
+      ReactDOM.render(
+        <SudokuSolver />,
+        document.getElementById('sudoku-solver')
+      );
     </script>
-
-    <script async src="sudoku-solver.js"></script>
   </body>
 </html>
