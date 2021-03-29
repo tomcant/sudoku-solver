@@ -93,7 +93,7 @@
                   <option value="custom">Custom</option>
                 </optgroup>
               </select>
-              <button onClick={solveClick} disabled={isSolved}>Solve</button>
+              <button onClick={solveClick} disabled={isSolved || isSolving}>Solve</button>
               <button onClick={resetClick} disabled={!isSolved && !isCustom}>Reset</button>
             </div>
             <Grid cells={cells} onCellChange={cellChange} />

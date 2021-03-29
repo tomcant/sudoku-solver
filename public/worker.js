@@ -5,7 +5,7 @@ var Module = {
         const grid = Module.Grid.FromString(e.data);
 
         self.postMessage({
-          cells: Module.Solver.Solve(grid).ToString()
+          cells: Module.Solver.Solve(grid).ToString(),
         });
       } catch (error) {
         self.postMessage({
