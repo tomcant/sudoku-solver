@@ -10,7 +10,6 @@ using sudoku_solver::Solver;
 
 EMSCRIPTEN_BINDINGS(Grid) {
   class_<Grid>("Grid")
-    .function("GetCells", &Grid::GetCells)
     .function("ToString", &Grid::ToString)
     .class_function("FromString", &Grid::FromString);
 }

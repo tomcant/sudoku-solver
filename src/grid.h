@@ -23,10 +23,6 @@ class Grid {
     return cells_[idx];
   }
 
-  vector<int> GetCells() const {
-    return cells_;
-  }
-
   bool IsCellEmpty(int idx) const {
     return GetCell(idx) == kEmpty;
   }
