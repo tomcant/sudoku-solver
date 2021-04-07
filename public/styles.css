@@ -52,6 +52,9 @@ h1, .SudokuSolver {
 .Grid-square:nth-child(3n) { border-right-width: 4px; }
 .Grid-square:nth-child(9n+1) { border-left-width: 4px; }
 
+input.Grid-square { caret-color: transparent; }
+input.Grid-square::selection { background: transparent; }
+
 @media screen and (min-width: 768px) {
   .Grid-squares {
     grid-template: repeat(9, 45px) / repeat(9, 1fr);
