@@ -66,17 +66,15 @@
           setError(null);
         };
 
-        const cellChange = (e, idx) => {
-          const digit = e.target.value;
-
-          if (!isNaN(digit) && digit.length <= 1) {
-            const newCells = cells.split('');
-            newCells[idx] = digit || '0';
-            setCells(newCells.join(''));
+        const cellKeyDown = (e, idx) => {
+          if (isNaN(e.key) || e.key.length !== 1) {
+            return;
           }
 
+          const newCells = cells.split('');
+          newCells[idx] = e.key || '0';
+          setCells(newCells.join(''));
           setIsCustom(true);
-          e.target.select();
         };
 
         return (
@@ -96,7 +94,7 @@
               <button onClick={solveClick} disabled={isSolved || isSolving}>Solve</button>
               <button onClick={resetClick} disabled={!isSolved && !isCustom}>Reset</button>
             </div>
-            <Grid cells={cells} onCellChange={cellChange} />
+            <Grid cells={cells} onCellKeyDown={cellKeyDown} />
             { error && <p>{error}</p> }
           </div>
         );
@@ -109,10 +107,11 @@
               <input
                 key={idx}
                 type="text"
+                maxLength="1"
+                pattern="[1-9]"
                 value={+cell || ''}
                 className="Grid-square"
-                onFocus={e => e.target.select()}
-                onChange={e => props.onCellChange(e, idx)}
+                onKeyDown={e => props.onCellKeyDown(e, idx)}
               />
             )}
           </div>
