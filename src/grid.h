@@ -54,9 +54,17 @@ class Grid {
  private:
   vector<int> cells_;
 
-  Grid(const vector<int> &cells): cells_(cells) {}
+  Grid(const vector<int> &cells): cells_(cells) {
+    Validate();
+  }
+
+  void Validate() noexcept(false);
 
   static const int kEmpty = 0;
+};
+
+struct Unsolvable : public std::runtime_error {
+  Unsolvable() : std::runtime_error("Grid is not solvable") {}
 };
 
 }  // namespace sudoku_solver

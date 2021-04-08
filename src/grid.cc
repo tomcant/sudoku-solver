@@ -38,7 +38,7 @@ bool Grid::BoxHasDigit(int digit, int cell_idx) {
 
   for (int i = start; i < end; i += 9) {
     for (int j = 0; j < 3; ++j) {
-      if (cells_[i + j] == digit) {
+      if (i + j != cell_idx && cells_[i + j] == digit) {
         return true;
       }
     }
@@ -52,7 +52,7 @@ bool Grid::RowHasDigit(int digit, int cell_idx) {
     end = start + 9;
 
   for (int i = start; i < end; ++i) {
-    if (GetCell(i) == digit) {
+    if (i != cell_idx && GetCell(i) == digit) {
       return true;
     }
   }
@@ -65,7 +65,7 @@ bool Grid::ColHasDigit(int digit, int cell_idx) {
     end = start + 73;
 
   for (int i = start; i < end; i += 9) {
-    if (GetCell(i) == digit) {
+    if (i != cell_idx && GetCell(i) == digit) {
       return true;
     }
   }
@@ -95,6 +95,24 @@ vector<vector<int>> Grid::GenerateChoices() {
   }
 
   return choices;
+}
+
+void Grid::Validate() {
+  for (int cell_idx = 0; cell_idx < kSize; ++cell_idx) {
+    if (IsCellEmpty(cell_idx)) {
+      continue;
+    }
+
+    int digit = GetCell(cell_idx);
+
+    if (
+      BoxHasDigit(digit, cell_idx) ||
+      RowHasDigit(digit, cell_idx) ||
+      ColHasDigit(digit, cell_idx)
+    ) {
+      throw Unsolvable();
+    }
+  }
 }
 
 }  // namespace sudoku_solver
