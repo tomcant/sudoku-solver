@@ -25,8 +25,7 @@
         easy: '050000030302000704080010050000703000006050300000802000020090040609000801010000060',
         medium: '300400600700090003800300000030521000000000090020030040048002000006000100000007400',
         hard: '800000000003600000070090200050007000000045700000100030001000068008500010090000400',
-        unsolvable: '200900000000000060000001000502600407000004100000098023000003080005010000007000000',
-        custom: '000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+        empty: '000000000000000000000000000000000000000000000000000000000000000000000000000000000',
       };
 
       var worker = new Worker('worker.js');
@@ -108,15 +107,10 @@
         return (
           <div className="Controls">
             <select ref={chosenPuzzle} onChange={onResetClick}>
-              <optgroup label="Difficulty">
-                <option value="easy">Easy</option>
-                <option value="medium">Medium</option>
-                <option value="hard">Hard</option>
-              </optgroup>
-              <optgroup label="Other">
-                <option value="unsolvable">Unsolvable</option>
-                <option value="custom">Custom</option>
-              </optgroup>
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+              <option value="empty">Empty</option>
             </select>
 
             <button onClick={solvePuzzle} disabled={isSolved || isSolving}>
