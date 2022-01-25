@@ -1,6 +1,6 @@
 #include "grid.h"
 
-namespace sudoku_solver {
+namespace sudoku {
 
 Grid Grid::FromString(const string &cells) {
   if (cells.size() != kSize) {
@@ -115,4 +115,4 @@ void Grid::Validate() {
   }
 }
 
-}  // namespace sudoku_solver
+}  // namespace sudoku

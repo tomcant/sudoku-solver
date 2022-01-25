@@ -7,7 +7,7 @@
 using std::string;
 using std::vector;
 
-namespace sudoku_solver {
+namespace sudoku {
 
 class Grid {
  public:
@@ -67,6 +67,6 @@ struct Unsolvable : public std::runtime_error {
   Unsolvable() : std::runtime_error("Grid is not solvable") {}
 };
 
-}  // namespace sudoku_solver
+}  // namespace sudoku
 
 #endif  // SRC_GRID_H_

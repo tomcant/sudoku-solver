@@ -1,4 +1,4 @@
-h1, .SudokuSolver {
+h1, .Solver {
   text-align: center;
 }
 
@@ -10,10 +10,6 @@ h1, .SudokuSolver {
   margin: 0 0.5rem;
 }
 
-.Controls > select {
-  text-transform: capitalize;
-}
-
 .Grid {
   display: flex;
   justify-content: center;
@@ -21,7 +17,7 @@ h1, .SudokuSolver {
 }
 
 .is-solving .Grid {
-  filter: blur(2px);
+  filter: blur(1px);
 }
 
 .Grid-squares {

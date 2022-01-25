@@ -2,7 +2,7 @@
 #include <vector>
 #include "solver.h"
 
-namespace sudoku_solver {
+namespace sudoku {
 
 Grid Solver::Solve(Grid grid) {
   // Make as many forced choices as possible.
@@ -61,4 +61,4 @@ Grid Solver::Solve(Grid grid) {
   throw Unsolvable();
 }
 
-}  // namespace sudoku_solver
+}  // namespace sudoku

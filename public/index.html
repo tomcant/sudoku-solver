@@ -18,10 +18,10 @@
       <h1>Sudoku Solver</h1>
     </header>
 
-    <div id="sudoku-solver"></div>
+    <div id="app"></div>
 
     <script>
-      const puzzles = {
+      var puzzles = {
         easy: '050000030302000704080010050000703000006050300000802000020090040609000801010000060',
         medium: '300400600700090003800300000030521000000000090020030040048002000006000100000007400',
         hard: '800000000003600000070090200050007000000045700000100030001000068008500010090000400',
@@ -29,24 +29,24 @@
         custom: '000000000000000000000000000000000000000000000000000000000000000000000000000000000',
       };
 
-      const worker = new Worker('worker.js');
+      var worker = new Worker('worker.js');
     </script>
 
     <script type="text/babel">
-      const SudokuSolver = props => {
+      const Solver = () => {
         const [cells, setCells] = React.useState(puzzles.easy);
         const [isCustom, setIsCustom] = React.useState(false);
         const [isSolving, setIsSolving] = React.useState(false);
         const [isSolved, setIsSolved] = React.useState(false);
         const [error, setError] = React.useState(null);
-        const selectElem = React.useRef(null);
 
-        const solveClick = () => {
+        const solvePuzzle = () => {
           setIsSolving(true);
           worker.postMessage(cells);
 
-          worker.onmessage = worker.onmessage || (
-            e => {
+          worker.onmessage =
+            worker.onmessage ||
+            ((e) => {
               setIsSolving(false);
 
               if (e.data.error !== undefined) {
@@ -55,74 +55,118 @@
                 setCells(e.data.cells);
                 setIsSolved(true);
               }
-            }
-          );
+            });
         };
 
-        const resetClick = () => {
-          setCells(puzzles[selectElem.current.value]);
+        const setPuzzle = (puzzle) => {
+          setCells(puzzles[puzzle]);
           setIsCustom(false);
           setIsSolved(false);
           setError(null);
         };
 
-        const cellChange = (e, idx) => {
-          const digit = e.target.value;
-
+        const setCell = (digit, idx) => {
           if (!isNaN(digit) && digit.length <= 1) {
-            const newCells = cells.split('');
+            const newCells = [...cells];
             newCells[idx] = digit || '0';
             setCells(newCells.join(''));
           }
 
           setIsCustom(true);
-          e.target.select();
         };
 
         return (
-          <div className={`SudokuSolver${isSolving ? ' is-solving' : ''}`}>
-            <div className="Controls">
-              <select ref={selectElem} onChange={resetClick}>
-                <optgroup label="Difficulty">
-                  {['easy', 'medium', 'hard'].map(difficulty =>
-                    <option value={difficulty}>{difficulty}</option>
-                  )}
-                </optgroup>
-                <optgroup label="Other">
-                  <option value="unsolvable">Unsolvable</option>
-                  <option value="custom">Custom</option>
-                </optgroup>
-              </select>
-              <button onClick={solveClick} disabled={isSolved || isSolving}>Solve</button>
-              <button onClick={resetClick} disabled={!isSolved && !isCustom}>Reset</button>
-            </div>
-            <Grid cells={cells} onCellChange={cellChange} />
-            { error && <p>{error}</p> }
+          <div className={`Solver${isSolving ? ' is-solving' : ''}`}>
+            <Controls
+              isCustom={isCustom}
+              isSolving={isSolving}
+              isSolved={isSolved}
+              solvePuzzle={solvePuzzle}
+              setPuzzle={setPuzzle}
+            />
+            <Grid
+              cells={cells}
+              setCell={setCell}
+            />
+            {error && <p>{error}</p>}
           </div>
         );
       };
 
-      const Grid = props => (
-        <div className="Grid">
-          <div className="Grid-squares">
-            {props.cells.split('').map((cell, idx) =>
-              <input
-                key={idx}
-                type="text"
-                value={+cell || ''}
-                className="Grid-square"
-                onFocus={e => e.target.select()}
-                onChange={e => props.onCellChange(e, idx)}
-              />
-            )}
+      const Controls = (props) => {
+        const {
+          isCustom,
+          isSolving,
+          isSolved,
+          solvePuzzle,
+          setPuzzle
+        } = props;
+
+        const chosenPuzzle = React.useRef(null);
+        const onResetClick = () => setPuzzle(chosenPuzzle.current.value);
+
+        return (
+          <div className="Controls">
+            <select ref={chosenPuzzle} onChange={onResetClick}>
+              <optgroup label="Difficulty">
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+              </optgroup>
+              <optgroup label="Other">
+                <option value="unsolvable">Unsolvable</option>
+                <option value="custom">Custom</option>
+              </optgroup>
+            </select>
+
+            <button onClick={solvePuzzle} disabled={isSolved || isSolving}>
+              Solve
+            </button>
+
+            <button onClick={onResetClick} disabled={!isSolved && !isCustom}>
+              Reset
+            </button>
           </div>
-        </div>
-      );
+        );
+      };
+
+      const Grid = ({ cells, setCell }) => {
+        const onCellChange = (event, idx) => {
+          setCell(event.target.value, idx);
+          event.target.select();
+        };
+
+        return (
+          <div className="Grid">
+            <div className="Grid-squares">
+              {[...cells].map((cell, idx) => (
+                <input
+                  key={idx}
+                  type="text"
+                  value={Number(cell) || ''}
+                  className="Grid-square"
+                  onFocus={(e) => e.target.select()}
+                  onChange={(e) => onCellChange(e, idx)}
+                />
+              ))}
+            </div>
+          </div>
+        );
+      };
 
       ReactDOM.render(
-        <SudokuSolver />,
-        document.getElementById('sudoku-solver')
+        <Solver />,
+        document.getElementById('app')
       );
+    </script>
+
+    <script>
+      if (window.location.search.indexOf('embed') !== -1) {
+        var embedCss = ':root{--nc-tx-1:#000000;--nc-tx-2:#1A1A1A;--nc-bg-1:#FFFFFF;--nc-bg-2:#F6F8FA;--nc-bg-3:#E5E7EB;--nc-lk-1:#0070F3;--nc-lk-2:#0366D6;--nc-lk-tx:#FFFFFF;--nc-ac-1:#79FFE1;--nc-ac-tx:#0C4047;}header{display:none;}';
+        var style = document.createElement('style');
+        style.appendChild(document.createTextNode(embedCss));
+        (document.head || document.getElementsByTagName('head')[0]).appendChild(style);
+      }
     </script>
   </body>
 </html>
